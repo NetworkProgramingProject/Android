@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SocketProgramming</string>
+    <string name="api_error">통신이 원활하지 않습니다. 잠시 후 다시 시도해주세요.</string>
+
+
+    <string name="login_warning_title">로그인 하시겠습니까?</string>
+    <string name="login_warning_like">스크랩 기능은\n로그인이 필요합니다.</string>
+    <string name="login_warning_btn_left_text">아니요</string>
+    <string name="login_warning_btn_right_text">네</string>
 </resources>
