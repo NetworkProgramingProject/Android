@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+
+# Kakao_API_AppKey
+app/src/main/res/values/kakao_api_appkey.xml
