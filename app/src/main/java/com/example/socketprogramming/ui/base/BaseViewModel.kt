@@ -56,25 +56,6 @@ open class BaseViewModel @Inject constructor(
     }
 
 
-
-    /** 카카오 로그인 서버 통신 */
-    open fun addKakaoUser(token: String,userId: Long) {
-        socketRepository.settingUser(
-                kakaoLoginRequest = KakaoLoginRequest(userId = userId, kakaoToken = token),
-                successAction =  { Intent(SocketApplication.appContext, HomeActivity::class.java).apply {
-                                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                        }.run {
-                                            Timber.e(token+userId)
-                                            _loginIntent.value = this
-                                        } },
-                failAction =  {
-                    _toastMeesageText.value = SocketApplication.getGlobalApplicationContext()
-                            .resources.getString(R.string.api_error)
-        })
-    }
-
-
     /**
      * [Disposable] 객체를 [compositeDisposable] 에 넣는다.
      * [compositeDisposable] 에 추가된 [Disposable] 들은
@@ -89,5 +70,9 @@ open class BaseViewModel @Inject constructor(
      * 필수가 아니므로 추상화는 하지 않는다.
      */
     open fun onResume() {
+    }
+
+    open fun onBackPressed() {
+
     }
 }

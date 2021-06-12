@@ -18,4 +18,14 @@
     <color name="colorPink">#ff3985</color>
     <color name="colorGrayAF">#afafaf</color>
     <color name="colorBlackOpacity66">#66000000</color>
+    <color name="colorLightPink">#fc89ac</color>
+    <color name="colorDarkGray">#4d5050</color>
+    <color name="colorPowderBlue">#c2d8f7</color>
+    <color name="colorBlueDark">#4789e7</color>
+    <color name="colorPowderPink">#ffaac4</color>
+
+
+
+
+
 </resources>

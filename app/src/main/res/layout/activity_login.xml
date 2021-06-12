@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="vm"
             type="com.example.socketprogramming.ui.login.LoginViewModel" />
@@ -13,45 +14,87 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.login.LoginActivity"
-        android:paddingHorizontal="24dp">
+        tools:context=".ui.login.LoginActivity">
 
         <TextView
+            android:id="@+id/tv_app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_app_name"
-            android:text="모의 경매 서비스"
+            android:text="모의 경매 애플리케이션"
+            android:textColor="@color/black"
             android:textSize="28dp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintVertical_bias="0.4"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4" />
 
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="모의 경매 서비스"
-            app:layout_constraintTop_toBottomOf="@id/tv_app_name"
+            android:layout_marginTop="16dp"
+            android:text="네트워크 프로그래밍 프로젝트"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:textSize="16dp"
-            android:textColor="@color/black"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_app_name" />
 
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <TextView
             android:id="@+id/btn_login"
-            android:src="@drawable/kakao_login_large_wide"
-            android:layout_marginTop="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_login_guest_black"
+            android:text="로그인"
+            android:layout_marginHorizontal="16dp"
+            app:onSingleClick="@{vm::clickLoginButton}"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            app:backgroundTint="@null"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@id/btn_register"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.9"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:padding="10dp"
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_login_guest"
+            android:text="회원가입"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="16dp"
+            app:onSingleClick="@{vm::clickRegisterButton}"
+            android:textAlignment="center"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="16dp"
+            app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_login" />
+
+        <include
+            android:id="@+id/login_layout"
+            layout="@layout/layout_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintVertical_bias="1"
+            android:visibility="@{vm.login ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:vm="@{vm}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

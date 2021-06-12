@@ -16,11 +16,38 @@ class HomeViewModel @Inject constructor(
     private val auth: AuthManager,
 ) : BaseViewModel(socketRepository) {
 
-    private var _loginWarningDlg : MutableLiveData<Boolean> = MutableLiveData()
-    val loginWarningDlg : LiveData<Boolean> = _loginWarningDlg
+    private var _selectHome : MutableLiveData<Boolean> = MutableLiveData()
+    val selectHome : LiveData<Boolean> = _selectHome
+
+    private var _selectProduct : MutableLiveData<Boolean> = MutableLiveData()
+    val selectProduct : LiveData<Boolean> = _selectProduct
+
+    private var _selectMyPage : MutableLiveData<Boolean> = MutableLiveData()
+    val selectMyPage : LiveData<Boolean> = _selectMyPage
 
     /** 생성자 */
     init {
+        _selectHome.value = true
+        _selectMyPage.value = false
+        _selectProduct.value = false
+    }
+
+    fun homeClick() {
+        _selectHome.value = true
+        _selectMyPage.value = false
+        _selectProduct.value = false
+    }
+
+    fun mypageClick() {
+        _selectHome.value = false
+        _selectMyPage.value = true
+        _selectProduct.value = false
+    }
+
+    fun productClick() {
+        _selectHome.value = false
+        _selectMyPage.value = false
+        _selectProduct.value = true
     }
 
 

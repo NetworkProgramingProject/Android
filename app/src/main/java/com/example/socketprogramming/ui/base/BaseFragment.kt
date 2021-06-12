@@ -1,5 +1,6 @@
 package com.example.perfumeproject.ui.base
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -58,6 +59,11 @@ abstract class BaseFragment<B : ViewDataBinding>(
         binding.lifecycleOwner = this
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        binding.lifecycleOwner = this
+    }
+
 }
 
 /**
@@ -66,6 +72,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
  * @param fm FragmentManager
  * @param id 프레그먼트가 들어갈 레이아웃 id
  */
+
 fun BaseFragment<*>.navigate(fm: FragmentManager, @IdRes id: Int): Int {
     return fm.run {
         beginTransaction()

@@ -1,55 +1,115 @@
 package com.example.socketprogramming.network
 
 
-import com.example.perfumeproject.data.response.KakaoLoginResponse
 import com.example.socketprogramming.SocketApplication
-import com.example.socketprogramming.data.request.KakaoLoginRequest
+import com.example.socketprogramming.data.request.AuctionPriceRequest
+import com.example.socketprogramming.data.request.LoginRequest
+import com.example.socketprogramming.data.request.ProductRequest
+import com.example.socketprogramming.data.request.RegisterRequest
+import com.example.socketprogramming.data.response.LoginResponse
+import com.example.socketprogramming.data.response.ProductData
+import com.example.socketprogramming.data.response.RegisterResponse
+import com.example.socketprogramming.data.response.SocketAuctionResponse
 import com.example.socketprogramming.di.AuthManager
 import com.example.socketprogramming.util.safeEnqueue
-import timber.log.Timber
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class SocketRepository @Inject constructor(
-    private val api: SocketService, private val authManager: AuthManager
+    private val api: SocketService, private val authManager: AuthManager, private val socketManager: SocketManager
 ) {
     init {
         val appContext = SocketApplication.getGlobalApplicationContext()
     }
 
 
-    fun postKakaoLogin(
-        kakaoLoginRequest: KakaoLoginRequest,
-        onSuccess : (KakaoLoginResponse) -> Unit,
-        onFailure : () -> Unit
+    fun postRegister(
+        registerRequest: RegisterRequest,
+        onSuccess: (RegisterResponse) -> Unit,
+        onFailure: () -> Unit
     ) {
-        api.postKakaoLogin(kakaoLoginRequest).safeEnqueue(
-            onSuccess = { onSuccess(it.result!!)},
-            onFailure = { onFailure()},
-            onError = {onFailure()}
+        api.postRegister(registerRequest).safeEnqueue(
+            onSuccess = { onSuccess(it) },
+            onFailure = { onFailure() },
+            onError = { onFailure() }
         )
     }
 
-    fun settingUser(
-        kakaoLoginRequest: KakaoLoginRequest,
-        successAction: (() -> Unit)? = null,
-        failAction: (() -> Unit)? = null
+    fun postLogin(
+        loginRequest: LoginRequest,
+        onSuccess: (LoginResponse) -> Unit,
+        onFailure: () -> Unit
     ) {
-        postKakaoLogin(
-                kakaoLoginRequest = kakaoLoginRequest,
-                onSuccess = {
-                    authManager.serverToken = it.token
-                    Timber.e("auth serverToken - ${authManager.serverToken}")
-                    authManager.autoLogin = true
-                    authManager.token = kakaoLoginRequest.kakaoToken
-                    authManager.id = kakaoLoginRequest.userId!!
-                    successAction?.let { it() }
-                },
-                onFailure = {
-                    authManager.autoLogin = false
-                    failAction?.let { it() }
-                }
+        api.postLogin(loginRequest).safeEnqueue(
+            onSuccess = { onSuccess(it) },
+            onFailure = { onFailure() },
+            onError = { onFailure() }
         )
     }
+
+    fun postRegisterProduct(
+        title : String,
+        desc : String,
+        minPrice : Int,
+        img : MultipartBody.Part,
+        onSuccess: (LoginResponse) -> Unit,
+        onFailure: () -> Unit
+    ) {
+        api.postRegisterProduct(title, desc, minPrice, img).safeEnqueue(
+            onSuccess = { onSuccess(it) },
+            onFailure = { onFailure() },
+            onError = { onFailure() }
+        )
+    }
+
+    fun getProductList(
+        onSuccess: (List<ProductData>) -> Unit,
+        onFailure: () -> Unit
+    ) {
+        api.getProductList().safeEnqueue(
+            onSuccess = { onSuccess(it.result!!) },
+            onFailure = { onFailure() },
+            onError = { onFailure() }
+        )
+    }
+
+    fun socketJoin(
+        goodsId : Int,
+        onData : (Array<Any>) -> Unit
+    ) {
+        socketManager.joinRoom(goodsId, onData = {
+            onData(it)
+        })
+    }
+
+    fun postAuctionPrice(
+        goodsId: Int,
+        auctionPriceRequest: AuctionPriceRequest,
+        onSuccess: (LoginResponse) -> Unit,
+        onFailure: () -> Unit
+    ) {
+        api.postAuctionPrice(goodsId, auctionPriceRequest).safeEnqueue (
+            onSuccess = { onSuccess(it) },
+            onFailure = { onFailure() },
+            onError = { onFailure() }
+        )
+    }
+
+
+
+//    fun postKakaoLogin(
+//        kakaoLoginRequest: KakaoLoginRequest,
+//        onSuccess : (KakaoLoginResponse) -> Unit,
+//        onFailure : () -> Unit
+//    ) {
+//        api.postKakaoLogin(kakaoLoginRequest).safeEnqueue(
+//            onSuccess = { onSuccess(it.result!!)},
+//            onFailure = { onFailure()},
+//            onError = {onFailure()}
+//        )
+//    }
+
+
 //
 //    fun getSearchPerfume(
 //        p_name : String,

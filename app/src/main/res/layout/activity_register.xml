@@ -8,17 +8,177 @@
         <import type="android.view.View"/>
         <variable
             name="vm"
-            type="com.example.socketprogramming.ui.register.RegisterActivity" />
+            type="com.example.socketprogramming.ui.register.RegisterViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".ui.social_best_more.BestMoreActivity">
 
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
 
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gl_left"
+                app:layout_constraintGuide_begin="16dp"
+                android:orientation="vertical"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gl_right"
+                app:layout_constraintGuide_end="16dp"
+                android:orientation="vertical"/>
+
+            <TextView
+                android:id="@+id/tv_register_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회원가입"
+                android:textSize="26dp"
+                android:textColor="@color/black"
+                android:layout_marginTop="60dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_register_sub_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="경매 서비스를 이용하기 위해\n회원가입이 필요합니다 :)"
+                android:textColor="@color/colorDarkGray"
+                app:layout_constraintTop_toBottomOf="@id/tv_register_title"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                android:layout_marginTop="4dp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이메일 형식이 올바르지 않습니다."
+                android:textColor="@color/colorPink"
+                android:layout_marginBottom="4dp"
+                android:visibility="@{vm.emailWarning ? View.VISIBLE :  View.GONE }"
+                app:layout_constraintBottom_toTopOf="@id/edit_register_email"
+                app:layout_constraintEnd_toEndOf="@id/gl_right"/>
+
+
+            <EditText
+                android:id="@+id/edit_register_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                app:layout_constraintEnd_toEndOf="@id/gl_right"
+                app:layout_constraintTop_toBottomOf="@id/tv_register_sub_title"
+                android:background="@drawable/bg_stroke_dark_gray_10"
+                android:hint="이메일을 입력해주세요"
+                android:textSize="16dp"
+                android:inputType="text"
+                android:maxLines="1"
+                app:textChangedListener="@{vm.emailCheckWatcher}"
+                android:layout_marginTop="48dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorGrayAF"
+                android:padding="10dp"/>
+
+
+            <EditText
+                android:id="@+id/edit_register_pw"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                app:layout_constraintEnd_toEndOf="@id/gl_right"
+                app:layout_constraintTop_toBottomOf="@id/edit_register_email"
+                android:background="@drawable/bg_stroke_dark_gray_10"
+                android:hint="비밀번호를 입력해주세요"
+                android:textSize="16dp"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                app:textChangedListener="@{vm.passwordWatcher}"
+                android:layout_marginTop="48dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorGrayAF"
+                android:padding="10dp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호가 일치하지 않습니다."
+                android:textColor="@color/colorPink"
+                android:layout_marginBottom="4dp"
+                android:visibility="@{vm.pwWarning ? View.VISIBLE :  View.GONE }"
+                app:layout_constraintBottom_toTopOf="@id/edit_register_pw_check"
+                app:layout_constraintEnd_toEndOf="@id/gl_right"/>
+
+
+            <EditText
+                android:id="@+id/edit_register_pw_check"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                app:layout_constraintEnd_toEndOf="@id/gl_right"
+                app:layout_constraintTop_toBottomOf="@id/edit_register_pw"
+                android:background="@drawable/bg_stroke_dark_gray_10"
+                android:hint="비밀번호를 다시 한 번 입력해주세요"
+                android:textSize="16dp"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:textChangedListener="@{vm.passwordCheckWatcher}"
+                android:layout_marginTop="30dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorGrayAF"
+                android:padding="10dp"/>
+
+            <EditText
+                android:id="@+id/edit_register_nick"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                app:layout_constraintEnd_toEndOf="@id/gl_right"
+                app:layout_constraintTop_toBottomOf="@id/edit_register_pw_check"
+                android:background="@drawable/bg_stroke_dark_gray_10"
+                android:hint="닉네임을 입력해주세요"
+                android:textSize="16dp"
+                android:maxLines="1"
+                android:inputType="text"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:textChangedListener="@{vm.nickNameWatcher}"
+                android:layout_marginTop="48dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorGrayAF"
+                android:padding="10dp"/>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="회원가입 하기"
+                android:textSize="16dp"
+                app:backgroundTint="@null"
+                android:padding="10dp"
+                app:onSingleClick="@{vm::checkingRegister}"
+                android:gravity="center"
+                android:background="@{vm.checking ? @drawable/bg_login_success : @drawable/bg_login_guest }"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                app:layout_constraintEnd_toEndOf="@id/gl_right"
+                app:layout_constraintTop_toBottomOf="@id/edit_register_nick"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

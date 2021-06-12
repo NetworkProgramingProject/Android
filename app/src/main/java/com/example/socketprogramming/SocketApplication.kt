@@ -2,8 +2,6 @@ package com.example.socketprogramming
 
 import android.app.Application
 import android.content.Context
-import com.kakao.auth.*
-import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -26,7 +24,6 @@ class SocketApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         appContext = this
-        KakaoSdk.init(this,getString(R.string.kakao_app_key))
         initTimber()
     }
 

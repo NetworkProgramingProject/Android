@@ -2,9 +2,15 @@ package com.example.socketprogramming.network
 
 
 
-import com.example.perfumeproject.data.response.KakaoLoginResponse
-import com.example.socketprogramming.data.request.KakaoLoginRequest
+import com.example.socketprogramming.data.request.AuctionPriceRequest
+import com.example.socketprogramming.data.request.LoginRequest
+import com.example.socketprogramming.data.request.ProductRequest
+import com.example.socketprogramming.data.request.RegisterRequest
+import com.example.socketprogramming.data.response.LoginResponse
+import com.example.socketprogramming.data.response.ProductData
+import com.example.socketprogramming.data.response.RegisterResponse
 import com.example.socketprogramming.data.response.SocketBaseResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -14,31 +20,35 @@ import retrofit2.http.*
  */
 interface SocketService {
 
+    @POST("auth/join")
+    fun postRegister(
+        @Body registerRequest: RegisterRequest
+    ): Call<RegisterResponse>
+
     @POST("auth/login")
-    fun postKakaoLogin(
-            @Body kakaoLoginRequest: KakaoLoginRequest
-    ): Call<SocketBaseResponse<KakaoLoginResponse>>
-//
-//    @GET("perfume/search")
-//    fun getSearchPerfume(
-//            @Query("p_name") searchKeyword : String
-//    ) : Call<PerfumeResponse<List<PerfumeData>>>
-//
-//    @PUT("scrap")
-//    fun putScrap(
-//        @Body scrapRequest: ScrapRequest
-//    ) : Call<PerfumeResponse<Unit>>
-//
-//    @GET("scrap")
-//    fun getScrapData() : Call<PerfumeResponse<List<PerfumeData>?>>
-//
-//    @POST("perfume/recommend/new")
-//    fun getNewPerfumeList(
-//        @Body perfumeDescRequest: perfumeDescRequest
-//    ) : Call<PerfumeResponse<List<PerfumeData>>>
-//
-//    @POST ("perfume/recommend/based")
-//    fun postBasedPerfume(
-//        @Body scrapRequest: ScrapRequest
-//    ) : Call<PerfumeResponse<List<PerfumeData>>>
+    fun postLogin(
+        @Body loginRequest: LoginRequest
+    ) : Call<LoginResponse>
+
+    @Multipart
+    @Headers("Content-Type: multipart/form-data")
+    @POST("goods")
+    fun postRegisterProduct(
+        @Part("title") title : String,
+        @Part("desc") desc : String,
+        @Part("min_price") minPrice : Int,
+        @Part("img") img : MultipartBody.Part?
+    ) : Call<LoginResponse>
+
+
+    @GET("goods")
+    fun getProductList(
+    ) : Call<SocketBaseResponse<List<ProductData>>>
+
+
+    @POST("goods/{id}/bid")
+    fun postAuctionPrice(
+        @Path("id") goodsId : Int,
+        @Body auctionPriceRequest: AuctionPriceRequest
+    ) : Call<LoginResponse>
 }

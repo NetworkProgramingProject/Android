@@ -1,30 +1,27 @@
 package com.example.socketprogramming.di
 
-import androidx.databinding.library.baseAdapters.BuildConfig
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.perfumeproject.ui.base.BaseViewModel
+import com.example.socketprogramming.BuildConfig
 import com.example.socketprogramming.SocketApplication
+import com.example.socketprogramming.network.SocketManager
 import com.example.socketprogramming.network.SocketRepository
 import com.example.socketprogramming.network.SocketService
 import com.example.socketprogramming.util.SharedPrefs
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
-import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -32,11 +29,12 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
+
 const val CONNECT_TIMEOUT = 15.toLong()
 const val WRITE_TIMEOUT = 15.toLong()
 const val READ_TIMEOUT = 15.toLong()
 
-const val BASE_URL = "http://13.209.121.249/"
+const val BASE_URL = "http://3.37.7.7:3000/"
 
 /**
  * 코루틴을 활용하여 HTTP 요청을 보낼 시 활용하는 로직
@@ -110,29 +108,12 @@ object NetworkModule {
             val builder = chain.request().newBuilder()
                 .url(newUrl)
 
-            if (newUrl.contains("/perfume/search")) {
+            if (newUrl.contains("/goods")) {
                 return@Interceptor chain.proceed(chain.request().newBuilder().apply {
-                    addHeader("token", authManager.serverToken)
+                    addHeader("token", authManager.token)
                     url(newUrl)
                 }.build())
             }
-
-            if (newUrl.contains("/scrap")) {
-                return@Interceptor chain.proceed(chain.request().newBuilder().apply {
-                    addHeader("token", authManager.serverToken)
-                    url(newUrl)
-                }.build())
-            }
-
-
-            if (newUrl.contains("/perfume/recommend")) {
-                return@Interceptor chain.proceed(chain.request().newBuilder().apply {
-                    addHeader("token", authManager.serverToken)
-                    url(newUrl)
-                }.build())
-            }
-
-
 
             return@Interceptor chain.proceed(builder.build())
         }
@@ -168,6 +149,12 @@ object NetworkModule {
     fun provideApiService(retrofit: Retrofit): SocketService {
         return retrofit.create(SocketService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideSocketService(): SocketManager {
+        return SocketManager()
+    }
 }
 
 @Module
@@ -196,10 +183,11 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providePerfumeRepository(
-        socketService: SocketService,
-        authManager: AuthManager
+            socketService: SocketService,
+            authManager: AuthManager,
+            socketManager: SocketManager
     ): SocketRepository {
-        return SocketRepository(socketService, authManager)
+        return SocketRepository(socketService, authManager, socketManager)
     }
 }
 

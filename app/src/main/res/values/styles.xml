@@ -1,0 +1,28 @@
+<resources>
+
+    <style name="TextAppearance.MainTabSelectedStyle" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/colorPink</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+
+
+    <style name="TextAppearance.MainTabUnSelectedStyle" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/colorGrayAF</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <style name="TextAppearance.ProductRegisterStyle" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.ProductRegisterStylePink" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/colorPink</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+</resources>
