@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.socketprogramming">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SocketProgramming"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".ui.register.RegisterActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="true" />
@@ -28,7 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

@@ -22,8 +22,6 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
-        // 카카오
-        maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
     }
 }
 
