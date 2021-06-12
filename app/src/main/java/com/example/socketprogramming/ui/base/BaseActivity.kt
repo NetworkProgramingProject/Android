@@ -11,8 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.perfumeproject.ui.base.ActivityResult
 import com.example.perfumeproject.ui.base.BaseViewModel
 import com.example.socketprogramming.di.AuthManager
-import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,7 +28,7 @@ import javax.inject.Inject
 
 abstract class BaseActivity<B : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int
-) : AppCompatActivity() {
+) : AppCompatActivity(){
     protected lateinit var binding: B
 
     /**
@@ -55,35 +53,8 @@ abstract class BaseActivity<B : ViewDataBinding>(
 
     @Inject
     lateinit var authManager: AuthManager
-    internal val callback : (OAuthToken?, Throwable?) -> Unit = { token, error ->
-        if (error != null) {
-            Timber.e("로그인 실패- $error")
-        } else if (token != null) {
-            UserApiClient.instance.me { user, error ->
-                val kakaoId = user!!.id
-                viewModel?.addKakaoUser(token.accessToken, kakaoId)
-            }
-            Timber.d("로그인성공 - 토큰 ${authManager.token}")
-        }
-    }
 
-    internal val baseCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-        Timber.e("error - ${error}, token- ${token}")
-        if (error != null) {
-            Timber.e("로그인 실패 ${error}")
-        } else if (token != null) {
-            //Login Success
-            Timber.d("로그인 성공")
-            authManager.apply {
-                this.token = token.accessToken
-            }
-            UserApiClient.instance.me { user, error ->
-                val kakaoId = user!!.id
-                viewModel?.addKakaoUser(token.accessToken, kakaoId)
-            }
-            Timber.d("로그인성공 - 토큰 ${authManager.token}")
-        }
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,12 +63,6 @@ abstract class BaseActivity<B : ViewDataBinding>(
 
         /** [uiScope] 사용 예 */
         uiScope.launch { }
-
-
-        viewModel?.loginIntent?.observe(this, {
-            startActivity(it)
-            finish()
-        })
     }
 
     @CallSuper
@@ -137,4 +102,5 @@ abstract class BaseActivity<B : ViewDataBinding>(
 
         return deferred.await()
     }
+
 }

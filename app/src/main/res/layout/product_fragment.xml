@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.example.socketprogramming.R"/>
+        <variable
+            name="vm"
+            type="com.example.socketprogramming.ui.product.ProductViewModel"/>
+    </data>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.product.ProductFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gl_left"
+                app:layout_constraintGuide_begin="16dp"
+                android:orientation="vertical"/>
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gl_right"
+                app:layout_constraintGuide_end="16dp"
+                android:orientation="vertical"/>
+
+
+
+            <TextView
+                android:id="@+id/tv_pregister_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="경매 상품 등록 하기"
+                android:textSize="24dp"
+                android:textColor="@color/black"
+                android:layout_marginTop="60dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/img_product_img"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                app:onSingleClick="@{vm::clickImage}"
+                app:layout_constraintTop_toBottomOf="@id/tv_pregister_title"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                app:layout_constraintEnd_toEndOf="@id/gl_right"
+                android:src="@color/colorGray"
+                app:layout_constraintDimensionRatio="4:3"/>
+
+
+            <TextView
+                android:id="@+id/tv_product_room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                style="@style/TextAppearance.ProductRegisterStyle"
+                android:text="경매룸 이름"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toTopOf="@id/edit_product_room"
+                android:layout_marginTop="24dp"/>
+
+            <EditText
+                android:id="@+id/edit_product_room"
+                android:layout_width="0dp"
+                android:inputType="text"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                app:layout_constraintEnd_toEndOf="@id/gl_right"
+                app:layout_constraintTop_toBottomOf="@id/img_product_img"
+                android:background="@drawable/bg_stroke_dark_gray_10"
+                android:hint="경매룸 이름을 입력해주세요"
+                android:textSize="16dp"
+                android:maxLines="1"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:textChangedListener="@{vm.productTitleCheck}"
+                android:layout_marginTop="48dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorGrayAF"
+                android:padding="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_product_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                style="@style/TextAppearance.ProductRegisterStyle"
+                android:text="경매룸 설명"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toTopOf="@id/edit_product_desc"
+                android:layout_marginTop="24dp"/>
+
+            <EditText
+                android:id="@+id/edit_product_desc"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                app:layout_constraintEnd_toEndOf="@id/gl_right"
+                app:layout_constraintTop_toBottomOf="@id/edit_product_room"
+                android:background="@drawable/bg_stroke_dark_gray_10"
+                android:hint="경매룸 설명을 입력해주세요"
+                android:textSize="16dp"
+                android:maxLines="2"
+                android:inputType="text"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:textChangedListener="@{vm.productDescCheck}"
+                android:layout_marginTop="48dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorGrayAF"
+                android:padding="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_product_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                style="@style/TextAppearance.ProductRegisterStyle"
+                android:text="최소 가격"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toTopOf="@id/edit_product_price"
+                android:layout_marginTop="24dp"/>
+
+            <EditText
+                android:id="@+id/edit_product_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_left"
+                app:layout_constraintEnd_toEndOf="@id/gl_right"
+                app:layout_constraintTop_toBottomOf="@id/edit_product_desc"
+                android:background="@drawable/bg_stroke_dark_gray_10"
+                android:hint="최소 가격을 입력해주세요"
+                android:inputType="number"
+                android:textSize="16dp"
+                android:maxLines="1"
+                app:textChangedListener="@{vm.productPriceCheck}"
+                android:layout_marginTop="48dp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColorHint="@color/colorGrayAF"
+                android:padding="10dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:src="@{vm.checking ? @drawable/floating_shadow : @drawable/floating_shadow_g}"
+                app:onSingleClick="@{vm::registerProduct}"
+                tools:src="@drawable/floating_shadow"
+                app:layout_constraintBottom_toBottomOf="@id/edit_product_price"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

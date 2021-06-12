@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="vm"
+            type="com.example.socketprogramming.ui.auction.AuctionDetailViewModel" />
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.auction.AuctionDetailActivity">
+
+
+
+
+            <ImageView
+                android:id="@+id/img_product_auction"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:src="@color/colorGrayAF"
+                app:imageGlide="@{vm.productList.image}"
+                app:layout_constraintBottom_toTopOf="@id/cl_auction"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:src="@color/colorBlackOpacity66"
+                app:layout_constraintTop_toTopOf="@id/img_product_auction"
+                app:layout_constraintBottom_toBottomOf="@id/img_product_auction"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vm.productList.title}"
+                android:textSize="24dp"
+                android:textColor="@color/colorGray"
+                tools:text="트위드 재킷"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toTopOf="@id/tv_max_price"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:id="@+id/img_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/btn_left"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_max_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="현재 최고가"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@id/tv_product_price"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_product_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(vm.productList.minPrice)}"
+                tools:text="2000"
+                android:textColor="@color/white"
+                android:textSize="36dp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="@id/img_product_auction"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="원"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:layout_marginStart="4dp"
+                app:layout_constraintTop_toTopOf="@id/tv_product_price"
+                app:layout_constraintBottom_toBottomOf="@id/tv_product_price"
+                app:layout_constraintStart_toEndOf="@id/tv_product_price"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="24dp"
+                android:id="@+id/cl_auction"
+                app:layout_constraintVertical_bias="1"
+                app:layout_constraintTop_toBottomOf="@id/img_product_auction"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/auction_time(vm.timer)}"
+                    android:textColor="@color/colorPink"
+                    android:textSize="18dp"
+                    tools:text="13:33:33 남음"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/tv_auction"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+                <TextView
+                    android:id="@+id/tv_auction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/bg_login_guest_black"
+                    android:paddingVertical="16dp"
+                    android:text="입찰하기"
+                    app:onSingleClick="@{vm::clickAuction}"
+                    android:gravity="center"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintVertical_chainStyle="spread"
+                    app:layout_constraintTop_toBottomOf="@id/tv_timer"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -5,10 +5,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * PerfumeResponse 기본 데이터 구조
+ * 소켓 프로그래밍 기본 데이터 구조
  */
 @Serializable
 data class SocketBaseResponse<T>(
+
     @SerialName("data")
     @SerializedName("data")
     val result: T?,

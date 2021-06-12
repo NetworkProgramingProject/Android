@@ -3,6 +3,9 @@
     package="com.example.socketprogramming">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".SocketApplication"
@@ -13,7 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SocketProgramming"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.register.RegisterActivity"></activity>
+        <activity android:name=".ui.auction.AuctionDetailActivity"></activity>
+        <activity
+            android:name=".ui.register.RegisterActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".ui.home.HomeActivity"
@@ -28,19 +34,6 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
-                <data
-                    android:host="oauth"
-                    android:scheme="@string/kakao_native_key" />
             </intent-filter>
         </activity>
     </application>

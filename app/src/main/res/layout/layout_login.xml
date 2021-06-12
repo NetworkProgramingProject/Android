@@ -1,0 +1,102 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.example.socketprogramming.ui.login.LoginViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_login"
+        android:paddingVertical="24dp"
+        android:paddingHorizontal="16dp">
+
+
+        <TextView
+            android:id="@+id/tv_register_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그인"
+            android:textSize="26dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="60dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:id="@+id/edit_login_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintBottom_toTopOf="@id/edit_login_pw"
+            android:background="@drawable/bg_stroke_dark_gray_10"
+            android:hint="이메일을 입력해주세요"
+            android:textSize="16dp"
+            android:maxLines="1"
+            android:inputType="text"
+            app:textChangedListener="@{vm.emailCheckWatcher}"
+            android:layout_marginTop="60dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/colorGrayAF"
+            android:padding="10dp"/>
+
+
+        <EditText
+            android:id="@+id/edit_login_pw"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@id/edit_login_email"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/bg_stroke_dark_gray_10"
+            android:hint="비밀번호를 입력해주세요"
+            android:textSize="16dp"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            app:textChangedListener="@{vm.passwordCheckWatcher}"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/colorGrayAF"
+            android:padding="10dp"/>
+
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="로그인 하기"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
+            android:padding="10dp"
+            app:onSingleClick="@{vm::checkingLogin}"
+            android:gravity="center"
+            android:background="@{vm.checking ? @drawable/bg_login_success : @drawable/bg_login_empty }"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_login_pw"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

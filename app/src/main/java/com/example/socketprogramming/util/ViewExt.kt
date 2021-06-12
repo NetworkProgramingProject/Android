@@ -114,8 +114,10 @@ fun setImageDrawableResource(imageView: ImageView, resource: Int) {
 }
 
 @BindingAdapter("imageGlide")
-fun setImageGlide(imageView: ImageView, resource: String) {
-    Glide.with(imageView).load(resource).into(imageView)
+fun setImageGlide(imageView: ImageView, resource: String?) {
+    if(!resource.isNullOrEmpty()) {
+        Glide.with(imageView).load(resource).into(imageView)
+    }
 }
 
 

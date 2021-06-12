@@ -11,7 +11,6 @@ import com.example.socketprogramming.databinding.ActivitySplashBinding
 import com.example.socketprogramming.ui.base.BaseActivity
 import com.example.socketprogramming.ui.login.LoginActivity
 import com.example.socketprogramming.util.startActivity
-import com.kakao.sdk.user.UserApiClient
 
 
 @AndroidEntryPoint
@@ -28,24 +27,12 @@ class SplashActivity(
     }
 
     private fun checkToken() {
-        UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-            if (error != null) {
-                authManager.autoLogin = false
-                startActivity(LoginActivity::class, isFinish = true)
-            } else if (tokenInfo != null) {
-                UserApiClient.instance.me { user, error ->
-                    if (authManager.autoLogin) {
-                        startActivity(HomeActivity::class, isFinish = true)
-                    } else {
-                        startActivity(LoginActivity::class, isFinish = true)
-                    }
-                }
-            } else {
-                authManager.autoLogin = false
-                startActivity(LoginActivity::class, isFinish = true)
+      if (authManager.autoLogin) {
+          startActivity(HomeActivity::class, false)
 
-            }
-        }
+      } else {
+          startActivity(LoginActivity::class, true)
+      }
     }
 
 
