@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.socketprogramming.BR
 import com.example.socketprogramming.R
+import com.example.socketprogramming.data.event.BidPriceUpdate
 import com.example.socketprogramming.data.request.AuctionPriceRequest
 import com.example.socketprogramming.data.request.SocketRequest
 import com.example.socketprogramming.data.response.ProductData
@@ -66,9 +67,11 @@ class AuctionDetailActivity : BaseActivity<ActivityAuctionDetailBinding>(R.layou
                             ),
                             onSuccess = {
                                 if (it.success) {
-                                    val data = "${productData!!.id}"
-                                    mSocket.emit("test", data)
-                                    Timber.d("가격 Post 성공")
+                                    val goodsId = "${productData!!.id}"
+                                    var bidPrice = viewModel.price.value!!
+                                    mSocket.emit("bid", gson.toJson(BidPriceUpdate(goodsId, bidPrice)))
+                                    Timber.d("가격 Post 성공+`${gson.toJson(BidPriceUpdate(goodsId, bidPrice))}")
+
                                 }
                             },
                             onFailure = {
@@ -93,6 +96,15 @@ class AuctionDetailActivity : BaseActivity<ActivityAuctionDetailBinding>(R.layou
         }
         mSocket.on(Socket.EVENT_CONNECT, onConnect)
 
+        mSocket.on("update") {
+            val msg = it[0].toString().toInt()
+            runOnUiThread {
+                Timber.e("${msg}!!!!!!!")
+                viewModel.getPrice(msg)
+            }
+
+        }
+
 
     }
 
@@ -100,16 +112,6 @@ class AuctionDetailActivity : BaseActivity<ActivityAuctionDetailBinding>(R.layou
         val data = "${productData!!.id}"
         Timber.e("socket - goods = $data")
         mSocket.emit("enter",data)
-        mSocket.on("bid", onBid)
-
-    }
-
-    private val onBid = Emitter.Listener {
-        val msg = it[0].toString().toInt()
-        runOnUiThread {
-            Timber.e("${msg}!!!!!!!")
-            viewModel.getPrice(msg)
-        }
 
     }
 
