@@ -6,10 +6,7 @@ import com.example.socketprogramming.data.request.AuctionPriceRequest
 import com.example.socketprogramming.data.request.LoginRequest
 import com.example.socketprogramming.data.request.ProductRequest
 import com.example.socketprogramming.data.request.RegisterRequest
-import com.example.socketprogramming.data.response.LoginResponse
-import com.example.socketprogramming.data.response.ProductData
-import com.example.socketprogramming.data.response.RegisterResponse
-import com.example.socketprogramming.data.response.SocketBaseResponse
+import com.example.socketprogramming.data.response.*
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -51,4 +48,8 @@ interface SocketService {
         @Path("id") goodsId : Int,
         @Body auctionPriceRequest: AuctionPriceRequest
     ) : Call<LoginResponse>
+
+
+    @GET("mypage")
+    fun getUserData() : Call<SocketBaseResponse<UserResponse>>
 }

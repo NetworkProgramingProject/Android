@@ -26,7 +26,6 @@ class AuctionViewModel @Inject constructor(
     private fun getProductData() {
         socketRepository.getProductList(
             onSuccess = {
-                Timber.e("${it}")
                 if(!it.isNullOrEmpty()) {
                     _results.value = it!!
                     _productSize.value = it!!.size

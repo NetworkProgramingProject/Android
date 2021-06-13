@@ -115,6 +115,13 @@ object NetworkModule {
                 }.build())
             }
 
+            if (newUrl.contains("/mypage")) {
+                return@Interceptor chain.proceed(chain.request().newBuilder().apply {
+                    addHeader("token", authManager.token)
+                    url(newUrl)
+                }.build())
+            }
+
             return@Interceptor chain.proceed(builder.build())
         }
     }

@@ -34,7 +34,7 @@ import com.example.socketprogramming.ui.auction.AuctionDetailViewModel
  */
 class AuctionDialog(
     private val width: Int = 300.dpToPx(),
-    private val height: Int = 202.dpToPx(),
+    private val height: Int = 240.dpToPx(),
     private val viewModel : AuctionDetailViewModel,
     private val leftClickListener: ((DialogFragment) -> Unit)? = null,
     private val rightClickListener: ((DialogFragment) -> Unit)? = null,
