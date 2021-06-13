@@ -16,6 +16,7 @@
     <color name="transparent">#00000000</color>
     <color name="colorGray">#eeeeee</color>
     <color name="colorPink">#ff3985</color>
+    <color name="colorPinkOpacity66">#66ff3985</color>
     <color name="colorGrayAF">#afafaf</color>
     <color name="colorBlackOpacity66">#66000000</color>
     <color name="colorLightPink">#fc89ac</color>

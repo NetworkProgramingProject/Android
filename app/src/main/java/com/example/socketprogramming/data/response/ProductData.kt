@@ -30,5 +30,8 @@ data class ProductData(
     val soldId : Int?,
     @SerializedName("Owner")
     val ownerData : OwnerData?
-) : java.io.Serializable
+) : java.io.Serializable {
+    val sold : Boolean
+        get() = !(soldId == null)
+}
 
