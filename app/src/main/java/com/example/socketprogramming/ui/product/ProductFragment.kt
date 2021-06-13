@@ -74,8 +74,7 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(R.layout.product_fr
 
         if(requestCode == GET_GALLERY_IMG && resultCode == RESULT_OK && data != null && data!!.data != null ) {
             val selectedImage = data!!.data!!
-            val file = File(data.data!!.path)
-            viewModel.getImage(file)
+            viewModel.getImage(selectedImage!!)
             Glide.with(this).load(selectedImage).into(binding.imgProductImg)
         }
     }

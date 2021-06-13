@@ -1,24 +1,29 @@
 package com.example.socketprogramming.ui.product
 
+import android.graphics.Bitmap
+import android.net.Uri
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.perfumeproject.ui.base.BaseViewModel
+import com.example.socketprogramming.SocketApplication
 import com.example.socketprogramming.network.SocketRepository
-import com.example.socketprogramming.util.FormDataUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import timber.log.Timber
-import java.io.File
+import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
-        private val socketRepository: SocketRepository,
+    private val socketRepository: SocketRepository,
 ) : BaseViewModel(socketRepository) {
 
     private var _productTitle = MutableLiveData<String>()
@@ -36,8 +41,14 @@ class ProductViewModel @Inject constructor(
     private var _clickImg = MutableLiveData<Boolean>()
     val clickImg: LiveData<Boolean> = _clickImg
 
-    private var _productImg = MutableLiveData<MultipartBody.Part?>()
-    val productImg: LiveData<MultipartBody.Part?> = _productImg
+    private var _productImg = MutableLiveData<Uri>()
+    val productImg: LiveData<Uri> = _productImg
+
+    private var _imgFile = MutableLiveData<String>()
+    val imgFile: LiveData<String> = _imgFile
+
+    private var _registerProduct = MutableLiveData<Boolean>()
+    val registerProduct: LiveData<Boolean> = _registerProduct
 
 
     /** 생성자 */
@@ -113,29 +124,44 @@ class ProductViewModel @Inject constructor(
 
     fun registerProduct() {
         if(_checking.value!!) {
+            if (_productImg.value != null) {
 
-            socketRepository.postRegisterProduct(
+                _registerProduct.value = true
+                val bitmap = MediaStore.Images.Media.getBitmap(
+                    SocketApplication.getGlobalAppApplication().contentResolver,
+                    _productImg.value!!
+                )
+
+                val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                val imageFileName = "${timeStamp}_${_productTitle.value!!}.png"
+
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                val byteArray = stream.toByteArray()
+                val fileReqBody = RequestBody.create("image/*".toMediaTypeOrNull(), byteArray)
+                val part = MultipartBody.Part.createFormData("img", imageFileName, fileReqBody)
+
+                socketRepository.postRegisterProduct(
+                    contentType = "multipart/form-data",
                     title = _productTitle.value!!,
                     desc = _productDesc.value!!,
-                    img = _productImg.value!!,
-                    minPrice = _minPrice.value!!,
+                    min_price = _minPrice.value!!,
+                    img = part,
                     onSuccess = {
-                        Timber.e("${it}")
-                        if (it.success) {
-                            Timber.d("상품등록성공")
-                        }
-                    },
-                    onFailure = {
-
+                    if (it.success) {
+                        Timber.e("통신 성공")
+                    }
+                    }, onFailure = {
 
                     }
-            )
+                )
 
+            }
         }
     }
 
-    fun getImage(file: File) {
-        _productImg.value = FormDataUtil.getImageBody("img", file)
+    fun getImage(uri: Uri) {
+        _productImg.value = uri
     }
 
 

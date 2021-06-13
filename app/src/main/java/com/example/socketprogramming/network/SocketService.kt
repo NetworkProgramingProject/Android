@@ -8,6 +8,8 @@ import com.example.socketprogramming.data.request.ProductRequest
 import com.example.socketprogramming.data.request.RegisterRequest
 import com.example.socketprogramming.data.response.*
 import okhttp3.MultipartBody
+import okhttp3.Request
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -28,13 +30,13 @@ interface SocketService {
     ) : Call<LoginResponse>
 
     @Multipart
-    @Headers("Content-Type: multipart/form-data")
     @POST("goods")
     fun postRegisterProduct(
+        @Header("Content-Type") contentType : String,
         @Part("title") title : String,
         @Part("desc") desc : String,
-        @Part("min_price") minPrice : Int,
-        @Part("img") img : MultipartBody.Part?
+        @Part("min_price") min_price : Int,
+        @Part img : MultipartBody.Part ?
     ) : Call<LoginResponse>
 
 

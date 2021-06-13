@@ -12,6 +12,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import com.example.socketprogramming.util.FragmentListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -41,6 +42,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
     val uiScope: CoroutineScope = MainScope()
 
     protected abstract val viewModel: BaseViewModel?
+    lateinit var fragmentListener : FragmentListener
     val viewModelFactory: ViewModelProvider.AndroidViewModelFactory by lazy {
         ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
     }
@@ -52,6 +54,8 @@ abstract class BaseFragment<B : ViewDataBinding>(
     ): View? {
         binding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
         return binding.root
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,5 +1,6 @@
 package com.example.socketprogramming.ui.sell
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,17 +17,18 @@ import com.example.socketprogramming.ui.auction.ProductDataAdapter
 import com.example.socketprogramming.ui.mypage.MyPageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+@SuppressLint("UseRequireInsteadOfGet")
 @AndroidEntryPoint
 class SellFragment : BaseFragment<SellFragmentBinding>(R.layout.sell_fragment) {
 
     override val viewModel: SellViewModel by viewModels<SellViewModel>()
     private val productDataAdapter: ProductDataAdapter by lazy { ProductDataAdapter(viewModel) }
-    private val myPageViewModel: MyPageViewModel by viewModels<MyPageViewModel>()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.setVariable(BR.vm, viewModel)
+
+        val myPageViewModel: MyPageViewModel by parentFragment!!.viewModels<MyPageViewModel>()
         binding.rvAuctionProduct.apply {
             adapter = productDataAdapter
             this.addItemDecoration(VerticalItemDecorator(20))

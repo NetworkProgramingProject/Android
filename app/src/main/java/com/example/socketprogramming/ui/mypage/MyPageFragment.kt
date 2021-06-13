@@ -28,6 +28,8 @@ class MyPageFragment : BaseFragment<MyPageFragmentBinding>(R.layout.my_page_frag
             fragmentManager = childFragmentManager
             vm = viewModel
             lifecycleOwner = this@MyPageFragment.viewLifecycleOwner
+
+
         }
 
         binding.apply {

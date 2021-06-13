@@ -171,7 +171,7 @@ class AuctionDetailActivity : BaseActivity<ActivityAuctionDetailBinding>(R.layou
     }
 
 
-        private fun init(goodsId: Int) {
+    private fun init(goodsId: Int) {
 
         try {
             mSocket = IO.socket("http://3.37.7.7:3000")

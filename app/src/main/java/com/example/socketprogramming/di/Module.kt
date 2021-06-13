@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.perfumeproject.ui.base.BaseViewModel
 import com.example.socketprogramming.BuildConfig
 import com.example.socketprogramming.SocketApplication
-import com.example.socketprogramming.network.SocketManager
 import com.example.socketprogramming.network.SocketRepository
 import com.example.socketprogramming.network.SocketService
 import com.example.socketprogramming.util.SharedPrefs
@@ -30,9 +29,9 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 
-const val CONNECT_TIMEOUT = 15.toLong()
-const val WRITE_TIMEOUT = 15.toLong()
-const val READ_TIMEOUT = 15.toLong()
+const val CONNECT_TIMEOUT = 20.toLong()
+const val WRITE_TIMEOUT = 20.toLong()
+const val READ_TIMEOUT = 20.toLong()
 
 const val BASE_URL = "http://3.37.7.7:3000/"
 
@@ -95,13 +94,9 @@ object NetworkModule {
         return Cache(SocketApplication.getGlobalApplicationContext().cacheDir, cacheSize)
     }
 
-    /**
-     * 커스텀 interceptor
-     * Firebase Crashlytic 로깅 로직을 넣을 예정이며 카카오 token 체크가 필요할 시 아래 함수를 활용한다.
-     */
     @Provides
     @Singleton
-    fun provideWinePickInterceptor(authManager: AuthManager): Interceptor {
+    fun provideSocketInterceptor(authManager: AuthManager): Interceptor {
         return Interceptor { chain: Interceptor.Chain ->
             val request = chain.request()
             var newUrl = request.url.toString()
@@ -156,12 +151,6 @@ object NetworkModule {
     fun provideApiService(retrofit: Retrofit): SocketService {
         return retrofit.create(SocketService::class.java)
     }
-
-    @Provides
-    @Singleton
-    fun provideSocketService(): SocketManager {
-        return SocketManager()
-    }
 }
 
 @Module
@@ -184,19 +173,6 @@ object AuthModule {
     }
 }
 
-@Module
-@InstallIn(SingletonComponent::class)
-object RepositoryModule {
-    @Provides
-    @Singleton
-    fun providePerfumeRepository(
-            socketService: SocketService,
-            authManager: AuthManager,
-            socketManager: SocketManager
-    ): SocketRepository {
-        return SocketRepository(socketService, authManager, socketManager)
-    }
-}
 
 @Module
 @InstallIn(SingletonComponent::class)

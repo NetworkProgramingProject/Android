@@ -1,5 +1,6 @@
 package com.example.socketprogramming.ui.buy
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -20,13 +21,14 @@ import com.example.socketprogramming.ui.auction.ProductDataAdapter
 import com.example.socketprogramming.ui.mypage.MyPageViewModel
 import com.example.socketprogramming.ui.sell.SellViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
+@SuppressLint("UseRequireInsteadOfGet")
 @AndroidEntryPoint
 class BuyFragment : BaseFragment<BuyFragmentBinding>(R.layout.buy_fragment) {
 
     override val viewModel: BuyViewModel by viewModels<BuyViewModel>()
-    private val myPageViewModel: MyPageViewModel by viewModels<MyPageViewModel>()
 
     private val productDataAdapter: ProductDataAdapter by lazy { ProductDataAdapter(viewModel) }
 
@@ -34,13 +36,13 @@ class BuyFragment : BaseFragment<BuyFragmentBinding>(R.layout.buy_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding.setVariable(BR.vm, viewModel)
 
+        val myPageViewModel: MyPageViewModel by parentFragment!!.viewModels<MyPageViewModel>()
         binding.rvAuctionProduct.apply {
             adapter = productDataAdapter
             this.addItemDecoration(VerticalItemDecorator(20))
         }
 
         if(!myPageViewModel.buyData.value.isNullOrEmpty()) {
-
             viewModel.getProductData(myPageViewModel.buyData.value!!)
         }
     }

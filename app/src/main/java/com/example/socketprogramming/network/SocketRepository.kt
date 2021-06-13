@@ -10,10 +10,11 @@ import com.example.socketprogramming.data.response.*
 import com.example.socketprogramming.di.AuthManager
 import com.example.socketprogramming.util.safeEnqueue
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class SocketRepository @Inject constructor(
-    private val api: SocketService, private val authManager: AuthManager, private val socketManager: SocketManager
+    private val api: SocketService, private val authManager: AuthManager
 ) {
     init {
         val appContext = SocketApplication.getGlobalApplicationContext()
@@ -45,14 +46,15 @@ class SocketRepository @Inject constructor(
     }
 
     fun postRegisterProduct(
+        contentType : String,
         title : String,
         desc : String,
-        minPrice : Int,
-        img : MultipartBody.Part,
+        min_price : Int,
+        img : MultipartBody.Part?,
         onSuccess: (LoginResponse) -> Unit,
         onFailure: () -> Unit
     ) {
-        api.postRegisterProduct(title, desc, minPrice, img).safeEnqueue(
+        api.postRegisterProduct(contentType, title= title,desc= desc,min_price= min_price,img = img!!).safeEnqueue(
             onSuccess = { onSuccess(it) },
             onFailure = { onFailure() },
             onError = { onFailure() }
