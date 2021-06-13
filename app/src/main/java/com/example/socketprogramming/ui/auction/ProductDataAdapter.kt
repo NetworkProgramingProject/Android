@@ -16,25 +16,25 @@ import com.example.socketprogramming.util.setOnSingleClickListener
  * 경매 상품 recyclerview adapter
  */
 class ProductDataAdapter(val vm: ProductDataViewModel) :
-    ListAdapter<ProductData, PerfumeDataViewHolder>(ProductDataDiffUtilCallBack) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PerfumeDataViewHolder {
+    ListAdapter<ProductData, ProductViewHolder>(ProductDataDiffUtilCallBack) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding: ItemProductBinding =
             DataBindingUtil.inflate(layoutInflater, R.layout.item_product, parent, false)
 
-        return PerfumeDataViewHolder(binding).apply {
+        return ProductViewHolder(binding).apply {
             binding.root.setOnSingleClickListener {
                 vm.productItemClick(binding.productData!!)
             }
         }
     }
 
-    override fun onBindViewHolder(holder: PerfumeDataViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         holder.bind(getItem(position), vm)
     }
 }
 
-class PerfumeDataViewHolder(private val binding: ItemProductBinding) :
+class ProductViewHolder(private val binding: ItemProductBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(productData: ProductData, vm: ProductDataViewModel) {

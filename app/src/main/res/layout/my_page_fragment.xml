@@ -5,24 +5,84 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="vm"
-            type="com.example.socketprogramming.ui.mypage.MyPageViewModel"/>
+            type="com.example.socketprogramming.ui.mypage.MyPageViewModel" />
+
+
+        <variable
+            name="fragmentManager"
+            type="androidx.fragment.app.FragmentManager" />
     </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
+        tools:context=".ui.mypage.MyPageFragment">
+
+        <TextView
+            android:id="@+id/tv_mypage_nick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{vm.nickName}"
+            android:textStyle="bold"
+            android:textSize="24dp"
+            tools:text="ㅇㅇㅇ"
+            android:layout_marginTop="34dp"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/colorPink"
+            app:layout_constraintBottom_toTopOf="@id/tab_social_bar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="myPage"
-            android:textSize="20dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:text="님 만나서 반가워요 :)"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_marginLeft="4dp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="@id/tv_mypage_nick"
+            app:layout_constraintStart_toEndOf="@id/tv_mypage_nick"
+            app:layout_constraintBottom_toBottomOf="@id/tv_mypage_nick" />
+
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_social_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            app:tabMode="fixed"
+            android:layout_marginTop="40dp"
+            style="@style/TextAppearance.SocialTabLayoutStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tabIndicatorHeight="2dp"
+            app:tabTextAppearance="@style/TextAppearance.MainTabSelectedStyle"
+            app:tabIndicator="@color/colorPink"
+            app:tabTextColor="@color/colorGray"
+            app:tabSelectedTextColor="@color/colorPink"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_nick"
+            app:setTapContents="@{vm.tabItems}"
+            app:setViewPosition="@{vm.position}"
+            app:setVm="@{vm}"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_social"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:setFsm="@{fragmentManager}"
+            app:setViewPosition="@{vm.position}"
+            app:setVm="@{vm}"
+            app:setPagerCount="@{vm.tabItems}"
+            app:layout_constraintTop_toBottomOf="@id/tab_social_bar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,27 +11,24 @@ import timber.log.Timber
 
 class SocketManager {
     private val gson = Gson()
-    private val socket: io.socket.client.Socket = IO.socket(BASE_URL)
+    private val socket: Socket
 
     init {
+        socket = IO.socket(BASE_URL)
         socket.connect()
     }
 
-    fun joinRoom(goodsId: Int, onData : (Array<Any>)-> Unit){
+    fun joinRoom(goodsId: Int){
         connectSocket()
-        socket.on(
-            Socket.EVENT_CONNECT,
-            Emitter.Listener { args: Array<Any?>? ->
-                socket.emit(
-                    "enter",
-                    gson.toJson(goodsId)
-                )
-            })
+        socket.emit("enter", goodsId)
 
-        socket.on("bid", Emitter.Listener { args: Array<Any> ->
-            Timber.e("$args")
-            onData(args)
+    }
+    fun getAuctionPrice(goodsId: Int,  onData : (Array<String>)-> Unit) {
+        connectSocket()
+        socket.on("bid", Emitter.Listener {
+            onData(arrayOf(it[0].toString()))
         })
+
     }
 
     fun leaveRoom(goodsId: Int) {

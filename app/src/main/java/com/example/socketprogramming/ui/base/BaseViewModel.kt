@@ -5,10 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.socketprogramming.ui.home.HomeActivity
-import com.example.socketprogramming.R
-import com.example.socketprogramming.SocketApplication
-import com.example.socketprogramming.data.request.KakaoLoginRequest
 import com.example.socketprogramming.network.SocketRepository
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable

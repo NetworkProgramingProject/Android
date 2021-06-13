@@ -36,8 +36,14 @@ class AuctionDetailViewModel @Inject constructor(
     private var _auctionBtn : MutableLiveData<Boolean> = MutableLiveData()
     val auctionBtn : LiveData<Boolean> = _auctionBtn
 
+    private var _backBtn : MutableLiveData<Boolean> = MutableLiveData()
+    val backBtn : LiveData<Boolean> = _backBtn
+
     private var _price = MutableLiveData<Int>()
     val price: LiveData<Int> = _price
+
+    private var _auctionMoney = MutableLiveData<Int>()
+    val auctionMoney: LiveData<Int> = _auctionMoney
 
 
     val priceWatcher = object : TextWatcher {
@@ -62,15 +68,25 @@ class AuctionDetailViewModel @Inject constructor(
     init {
 
         _auctionBtn.value = false
+        _backBtn.value = false
 
     }
 
     fun getProductData(productData: ProductData) {
         _productList.value = productData
+        _auctionMoney.value = productData.minPrice
+    }
+
+    fun getPrice(price : Int) {
+        _auctionMoney.value = price
     }
 
     fun clickAuction() {
         _auctionBtn.value = true
+    }
+
+    fun clickBackBtn() {
+        _backBtn.value = true
     }
 
     /** UI 의 onDestroy 개념으로 생각하면 편할듯 */
