@@ -32,9 +32,6 @@ class MyPageFragment : BaseFragment<MyPageFragmentBinding>(R.layout.my_page_frag
 
         }
 
-        binding.apply {
-            // 텍스트 값 세팅
-        }
     }
 
 }

@@ -28,10 +28,11 @@ class AuctionFragment : BaseFragment<AuctionFragmentBinding>(R.layout.auction_fr
             adapter = productDataAdapter
             this.addItemDecoration(VerticalItemDecorator(20))
         }
+    }
 
-        binding.apply {
-            // 텍스트 값 세팅
-        }
+    override fun onResume() {
+        super.onResume()
+        viewModel.onResume()
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.socketprogramming.ui.product
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.text.Editable
@@ -11,11 +12,14 @@ import com.example.perfumeproject.ui.base.BaseViewModel
 import com.example.socketprogramming.SocketApplication
 import com.example.socketprogramming.network.SocketRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -41,8 +45,8 @@ class ProductViewModel @Inject constructor(
     private var _clickImg = MutableLiveData<Boolean>()
     val clickImg: LiveData<Boolean> = _clickImg
 
-    private var _productImg = MutableLiveData<Uri>()
-    val productImg: LiveData<Uri> = _productImg
+    private var _productImg = MutableLiveData<MultipartBody.Part>()
+    val productImg: LiveData<MultipartBody.Part> = _productImg
 
     private var _imgFile = MutableLiveData<String>()
     val imgFile: LiveData<String> = _imgFile
@@ -50,11 +54,15 @@ class ProductViewModel @Inject constructor(
     private var _registerProduct = MutableLiveData<Boolean>()
     val registerProduct: LiveData<Boolean> = _registerProduct
 
+    private var _successRegister = MutableLiveData<Boolean>()
+    val successRegister: LiveData<Boolean> = _successRegister
+
 
     /** 생성자 */
     init {
         _checking.value = false
         _clickImg.value = false
+        _successRegister.value = false
     }
 
     val productTitleCheck = object : TextWatcher {
@@ -127,29 +135,19 @@ class ProductViewModel @Inject constructor(
             if (_productImg.value != null) {
 
                 _registerProduct.value = true
-                val bitmap = MediaStore.Images.Media.getBitmap(
-                    SocketApplication.getGlobalAppApplication().contentResolver,
-                    _productImg.value!!
-                )
+                val map = mutableMapOf<String, RequestBody>()
+                map["title"] = stringToRequestBody(_productTitle.value!!)
+                map["desc"] = stringToRequestBody(_productDesc.value!!)
+                map["min_price"] = stringToRequestBody("${_minPrice.value!!}")
 
-                val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-                val imageFileName = "${timeStamp}_${_productTitle.value!!}.png"
-
-                val stream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                val byteArray = stream.toByteArray()
-                val fileReqBody = RequestBody.create("image/*".toMediaTypeOrNull(), byteArray)
-                val part = MultipartBody.Part.createFormData("img", imageFileName, fileReqBody)
 
                 socketRepository.postRegisterProduct(
-                    contentType = "multipart/form-data",
-                    title = _productTitle.value!!,
-                    desc = _productDesc.value!!,
-                    min_price = _minPrice.value!!,
-                    img = part,
+                    map = map,
+                    img = _productImg.value!!,
                     onSuccess = {
                     if (it.success) {
-                        Timber.e("통신 성공")
+                        Timber.e("데이터 전달 통신 성공")
+                        _successRegister.value = true
                     }
                     }, onFailure = {
 
@@ -160,8 +158,12 @@ class ProductViewModel @Inject constructor(
         }
     }
 
-    fun getImage(uri: Uri) {
-        _productImg.value = uri
+    private fun stringToRequestBody(str : String) : RequestBody {
+        return RequestBody.create("text/plain".toMediaTypeOrNull(), str)
+    }
+
+    fun getImage(multipartBody: MultipartBody.Part) {
+        _productImg.value = multipartBody
     }
 
 

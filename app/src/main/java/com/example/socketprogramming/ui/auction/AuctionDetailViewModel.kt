@@ -75,6 +75,9 @@ class AuctionDetailViewModel @Inject constructor(
     fun getProductData(productData: ProductData) {
         _productList.value = productData
         _auctionMoney.value = productData.minPrice
+        if(_productList.value!!.sold) {
+            _timer.value = "경매가 종료되었습니다."
+        }
     }
 
     fun getPrice(price : Int) {
@@ -92,5 +95,9 @@ class AuctionDetailViewModel @Inject constructor(
     /** UI 의 onDestroy 개념으로 생각하면 편할듯 */
     override fun onCleared() {
         super.onCleared()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }

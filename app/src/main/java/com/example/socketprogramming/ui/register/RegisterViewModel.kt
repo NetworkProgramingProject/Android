@@ -44,12 +44,19 @@ class RegisterViewModel @Inject constructor(
     private var _registerSuccess = MutableLiveData<Boolean>()
     val registerSuccess: LiveData<Boolean> = _registerSuccess
 
+    private var _registerFail = MutableLiveData<Boolean>()
+    val registerFail: LiveData<Boolean> = _registerFail
+
+    private var _msg = MutableLiveData<String>()
+    val msg: LiveData<String> = _msg
+
     /** 생성자 */
     init {
         _emailWarning.value = false
         _pwWarning.value = false
         _checking.value = false
         _registerSuccess.value = false
+        _registerFail.value = false
     }
 
 
@@ -160,6 +167,9 @@ class RegisterViewModel @Inject constructor(
                         Timber.d("회원가입 성공")
                         authManager.token = it.data!!.token!!
                         _registerSuccess.value = true
+                    } else {
+                        _msg.value = it.message
+                        _registerFail.value = true
                     }
 
                 },

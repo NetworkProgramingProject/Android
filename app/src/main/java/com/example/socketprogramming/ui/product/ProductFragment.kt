@@ -3,18 +3,14 @@ package com.example.socketprogramming.ui.product
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
-import androidx.lifecycle.ViewModelProvider
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.os.Environment
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
+import android.provider.MediaStore
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -23,14 +19,15 @@ import com.example.perfumeproject.ui.base.BaseFragment
 import com.example.socketprogramming.BR
 import com.example.socketprogramming.R
 import com.example.socketprogramming.SocketApplication
-import com.example.socketprogramming.databinding.MyPageFragmentBinding
 import com.example.socketprogramming.databinding.ProductFragmentBinding
-import com.example.socketprogramming.ui.login.LoginActivity
-import com.example.socketprogramming.ui.mypage.MyPageViewModel
-import com.example.socketprogramming.util.startActivity
+import com.example.socketprogramming.ui.auction.AuctionFragment
 import com.example.socketprogramming.util.toast
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
+
 
 @AndroidEntryPoint
 class ProductFragment : BaseFragment<ProductFragmentBinding>(R.layout.product_fragment) {
@@ -48,23 +45,34 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(R.layout.product_fr
         }
 
         viewModel.clickImg.observe(lifecycleOwner, Observer {
-            if(it) {
+            if (it) {
                 //갤러리 퍼미션
-                if (!allStoragePermissionsGranted()){
+                if (!allStoragePermissionsGranted()) {
                     ActivityCompat.requestPermissions(
-                        this.requireActivity(), REQUIRED_STORAGE_PERMISSIONS, REQUEST_CODE_STORAGE_PERMISSIONS)
+                            this.requireActivity(), REQUIRED_STORAGE_PERMISSIONS, REQUEST_CODE_STORAGE_PERMISSIONS)
                 } else {
                     getImage()
                 }
             }
         })
 
+        viewModel.successRegister.observe(lifecycleOwner, Observer {
+            if (it) {
+                toast("상품이 등록되었습니다!")
+                val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+                val auctionFragment = AuctionFragment()
+                transaction.replace(R.id.fl_main, auctionFragment)
+                transaction.commit()
+            }
+        })
+
+
     }
 
     private fun getImage() {
         val intent = Intent(Intent.ACTION_PICK)
-        intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*")
-        startActivityForResult(intent,GET_GALLERY_IMG)
+        intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+        startActivityForResult(intent, GET_GALLERY_IMG)
     }
 
     @Override
@@ -74,14 +82,22 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(R.layout.product_fr
 
         if(requestCode == GET_GALLERY_IMG && resultCode == RESULT_OK && data != null && data!!.data != null ) {
             val selectedImage = data!!.data!!
-            viewModel.getImage(selectedImage!!)
+            val bitmap = MediaStore.Images.Media.getBitmap(SocketApplication.appContext!!.contentResolver, selectedImage)
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 20, stream)
+            val byteArray = stream.toByteArray()
+
+            val fileReqBody = RequestBody.create("image/png".toMediaTypeOrNull(), byteArray)
+            val fileName = selectedImage.path!!
+            val part = MultipartBody.Part.createFormData("img", fileName, fileReqBody)
+            viewModel.getImage(part)
             Glide.with(this).load(selectedImage).into(binding.imgProductImg)
         }
     }
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_STORAGE_PERMISSIONS) {
@@ -95,10 +111,8 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(R.layout.product_fr
 
     private fun allStoragePermissionsGranted() = REQUIRED_STORAGE_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            SocketApplication.appContext!!, it ) == PackageManager.PERMISSION_GRANTED
+                SocketApplication.appContext!!, it) == PackageManager.PERMISSION_GRANTED
     }
-
-
 
 
     companion object {
@@ -106,7 +120,5 @@ class ProductFragment : BaseFragment<ProductFragmentBinding>(R.layout.product_fr
         private const val GET_GALLERY_IMG = 200
         private val REQUIRED_STORAGE_PERMISSIONS = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)
     }
-
-
 
 }

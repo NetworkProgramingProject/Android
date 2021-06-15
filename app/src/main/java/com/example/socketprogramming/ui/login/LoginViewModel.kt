@@ -38,12 +38,19 @@ class LoginViewModel @Inject constructor(
     private var _register = MutableLiveData<Boolean>()
     val register: LiveData<Boolean> = _register
 
+    private var _loginFail = MutableLiveData<Boolean>()
+    val loginFail: LiveData<Boolean> = _loginFail
+
+    private var _msg = MutableLiveData<String>()
+    val msg: LiveData<String> = _msg
+
     /** 생성자 */
     init {
         _login.value = false
         _register.value = false
         _checking.value = false
         _loginSuccess.value = false
+        _loginFail.value = false
 
     }
 
@@ -95,6 +102,9 @@ class LoginViewModel @Inject constructor(
                     authManager.autoLogin = true
                     Timber.d("로그인 성공 - ${it.data!!}")
                     _loginSuccess.value = true
+                } else {
+                    _msg.value = it.message!!
+                    _loginFail.value = true
                 }
             },
             onFailure = {
@@ -113,7 +123,7 @@ class LoginViewModel @Inject constructor(
 
 
     fun clickLoginButton() {
-        _login.value = !_login.value!!
+        _login.value = true
         Timber.e("로그인 화면 - ${_login.value!!}")
 
     }
@@ -123,7 +133,6 @@ class LoginViewModel @Inject constructor(
 
     override fun onBackPressed() {
         _login.value = false
-        Timber.e("백버튼 !")
     }
 
 }

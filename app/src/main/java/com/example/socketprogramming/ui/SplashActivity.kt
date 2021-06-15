@@ -27,12 +27,7 @@ class SplashActivity(
     }
 
     private fun checkToken() {
-      if (authManager.autoLogin) {
-          startActivity(HomeActivity::class, false)
-
-      } else {
-          startActivity(LoginActivity::class, true)
-      }
+        startActivity(LoginActivity::class, true)
     }
 
 

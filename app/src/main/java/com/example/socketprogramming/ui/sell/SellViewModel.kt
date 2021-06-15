@@ -5,13 +5,14 @@ import com.example.perfumeproject.ui.base.BaseViewModel
 import com.example.socketprogramming.data.response.ProductData
 import com.example.socketprogramming.network.SocketRepository
 import com.example.socketprogramming.ui.auction.ProductDataViewModel
+import com.example.socketprogramming.ui.mypage.MyPageViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SellViewModel @Inject constructor(
     private val socketRepository: SocketRepository
-) : ProductDataViewModel(socketRepository) {
+) : MyPageViewModel(socketRepository) {
 
     /** 생성자 */
     init {
@@ -19,7 +20,6 @@ class SellViewModel @Inject constructor(
     }
 
     override fun productItemClick(productData: ProductData) {
-        TODO("Not yet implemented")
     }
 
     fun getProductData(result : List<ProductData>) {

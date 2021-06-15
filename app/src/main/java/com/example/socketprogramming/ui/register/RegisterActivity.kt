@@ -11,6 +11,7 @@ import com.example.socketprogramming.ui.base.BaseActivity
 import com.example.socketprogramming.ui.home.HomeActivity
 import com.example.socketprogramming.ui.login.LoginActivity
 import com.example.socketprogramming.util.startActivity
+import com.example.socketprogramming.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -24,7 +25,15 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>(R.layout.activity
 
         viewModel.registerSuccess.observe(this, Observer {
             if(it) {
-                startActivity(LoginActivity::class, false)
+                toast("회원가입이 되었습니다.")
+                startActivity(LoginActivity::class, true)
+
+            }
+        })
+
+        viewModel.registerFail.observe(this, Observer {
+            if(it) {
+                toast("${viewModel.msg.value}")
             }
         })
     }

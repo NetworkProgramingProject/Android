@@ -32,10 +32,7 @@ interface SocketService {
     @Multipart
     @POST("goods")
     fun postRegisterProduct(
-        @Header("Content-Type") contentType : String,
-        @Part("title") title : String,
-        @Part("desc") desc : String,
-        @Part("min_price") min_price : Int,
+        @PartMap map : Map<String, @JvmSuppressWildcards RequestBody>,
         @Part img : MultipartBody.Part ?
     ) : Call<LoginResponse>
 

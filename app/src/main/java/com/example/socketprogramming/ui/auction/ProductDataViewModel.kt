@@ -15,6 +15,9 @@ abstract class ProductDataViewModel constructor(
     protected val _results = MutableLiveData<List<ProductData>>(listOf())
     open val results : LiveData<List<ProductData>> = _results
 
+    protected val _myResults = MutableLiveData<List<ProductData>>(listOf())
+    open val myResults : LiveData<List<ProductData>> = _myResults
+
     protected val _productSize = MutableLiveData<Int>()
     open val productSize : LiveData<Int> = _productSize
 

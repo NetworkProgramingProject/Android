@@ -20,7 +20,7 @@ class AuctionViewModel @Inject constructor(
     /** 생성자 */
     init {
         _productSize.value = 0
-        getProductData()
+
     }
 
     private fun getProductData() {
@@ -49,5 +49,10 @@ class AuctionViewModel @Inject constructor(
     /** UI 의 onDestroy 개념으로 생각하면 편할듯 */
     override fun onCleared() {
         super.onCleared()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getProductData()
     }
 }

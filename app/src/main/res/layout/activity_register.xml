@@ -170,6 +170,8 @@
                 android:padding="10dp"
                 app:onSingleClick="@{vm::checkingRegister}"
                 android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@{vm.checking? @color/white : @color/black}"
                 android:background="@{vm.checking ? @drawable/bg_login_success : @drawable/bg_login_guest }"
                 app:layout_constraintStart_toStartOf="@id/gl_left"
                 app:layout_constraintEnd_toEndOf="@id/gl_right"

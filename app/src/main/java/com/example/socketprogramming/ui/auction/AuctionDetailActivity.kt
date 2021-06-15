@@ -115,7 +115,7 @@ class AuctionDetailActivity : BaseActivity<ActivityAuctionDetailBinding>(R.layou
             }
 
             override fun onFinish() {
-
+                countTimer!!.cancel()
             }
 
         }
@@ -205,6 +205,8 @@ class AuctionDetailActivity : BaseActivity<ActivityAuctionDetailBinding>(R.layou
         super.onDestroy()
         if(!productData!!.sold) {
             mSocket.disconnect()
+            countTimer!!.cancel()
+
         }
     }
 

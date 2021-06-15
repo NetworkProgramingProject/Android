@@ -1,6 +1,7 @@
 package com.example.socketprogramming.network
 
 
+import com.example.socketprogramming.R
 import com.example.socketprogramming.SocketApplication
 import com.example.socketprogramming.data.request.AuctionPriceRequest
 import com.example.socketprogramming.data.request.LoginRequest
@@ -46,15 +47,12 @@ class SocketRepository @Inject constructor(
     }
 
     fun postRegisterProduct(
-        contentType : String,
-        title : String,
-        desc : String,
-        min_price : Int,
+        map : Map<String, RequestBody>,
         img : MultipartBody.Part?,
         onSuccess: (LoginResponse) -> Unit,
         onFailure: () -> Unit
     ) {
-        api.postRegisterProduct(contentType, title= title,desc= desc,min_price= min_price,img = img!!).safeEnqueue(
+        api.postRegisterProduct(map = map,img = img!!).safeEnqueue(
             onSuccess = { onSuccess(it) },
             onFailure = { onFailure() },
             onError = { onFailure() }

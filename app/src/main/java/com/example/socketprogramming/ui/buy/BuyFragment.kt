@@ -36,14 +36,9 @@ class BuyFragment : BaseFragment<BuyFragmentBinding>(R.layout.buy_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding.setVariable(BR.vm, viewModel)
 
-        val myPageViewModel: MyPageViewModel by parentFragment!!.viewModels<MyPageViewModel>()
         binding.rvAuctionProduct.apply {
             adapter = productDataAdapter
             this.addItemDecoration(VerticalItemDecorator(20))
-        }
-
-        if(!myPageViewModel.buyData.value.isNullOrEmpty()) {
-            viewModel.getProductData(myPageViewModel.buyData.value!!)
         }
     }
 
